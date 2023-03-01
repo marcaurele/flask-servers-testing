@@ -1,0 +1,31 @@
+---
+
+services:
+  bjoern:
+    build:
+      context: .
+    ports:
+      - "8000:8000"
+    volumes:
+    - .:/build
+    cpu_count: 1
+
+  gunicorn:
+    build:
+      context: .
+    command: gunicorn --bind 0.0.0.0:8001 --workers 1 wsgi:app
+    ports:
+    - "8001:8001"
+    volumes:
+    - .:/build
+    cpu_count: 1
+
+  uvicorn:
+    build:
+      context: .
+    command: uvicorn --host 0.0.0.0 --port 8002 --workers 1 asgi:asgi_app
+    ports:
+    - "8002:8002"
+    volumes:
+    - .:/build
+    cpu_count: 1
