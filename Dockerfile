@@ -1,8 +1,4 @@
-###############
-# Build stage #
-###############
-# Put here any build steps in order to not install building tools into the final image
-FROM python:3.11-alpine as builder
+FROM python:3.11.2-alpine3.17 as builder
 
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
@@ -12,16 +8,12 @@ ENV PYTHONUNBUFFERED=1 \
     POETRY_HOME=/opt/poetry \
     POETRY_NO_INTERACTION=1
 
-# hadolint ignore=DL3013,DL3018,DL4006
 RUN set -ex \
     && apk add --no-cache \
         build-base \
-        # cargo \
         curl \
         libev-dev \
-        # libffi-dev \
         linux-headers \
-        # py3-virtualenv \
     && pip install poetry
 
 WORKDIR /tmp
@@ -31,7 +23,6 @@ COPY pyproject.toml poetry.lock /tmp/
 RUN set -ex \
   && poetry export -f requirements.txt --output requirements.txt --without-hashes
 
-# hadolint ignore=DL3013
 RUN set -ex \
   && poetry config virtualenvs.options.system-site-packages true \
 	&& poetry config virtualenvs.create false \
