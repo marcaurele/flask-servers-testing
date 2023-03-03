@@ -1,4 +1,7 @@
-FROM python:3.11.2-alpine3.17 as builder
+####################
+### Build / Wheels #
+####################
+FROM python:3.11.2-alpine3.17 as requirements
 
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
@@ -21,7 +24,15 @@ WORKDIR /tmp
 COPY pyproject.toml poetry.lock /tmp/
 
 RUN set -ex \
-  && poetry export -f requirements.txt --output requirements.txt --without-hashes
+  && poetry export -f requirements.txt --output requirements.txt \
+  && pip wheel --no-cache-dir \
+      --wheel-dir /wheels \
+      --requirement requirements.txt
+
+###############
+# Development #
+###############
+FROM requirements as development
 
 RUN set -ex \
   && poetry config virtualenvs.options.system-site-packages true \
@@ -31,6 +42,34 @@ RUN set -ex \
 WORKDIR /build/src
 
 COPY ./src /build/src/
+
+# Bjoern
+CMD ["python", "wsgi.py"]
+
+###########
+# Runtime #
+###########
+FROM python:3.11.2-alpine3.17 as runtime
+
+LABEL "org.opencontainers.image.authors"="Marc-Aurele BRothier"
+LABEL "org.opencontainers.image.url"="https://github.com/marcaurele/flask-servers-testing"
+LABEL "org.opencontainers.image.source"="https://github.com/marcaurele/flask-servers-testing/blob/main/Dockerfile"
+LABEL "org.opencontainers.image.vendor"="Private"
+LABEL "org.opencontainers.image.title"="Flask servers testing"
+LABEL "org.opencontainers.image.description"="Image to validate performance testing for different WSGI and ASGI servers."
+
+COPY --from=requirements /wheels/ /wheels/
+
+RUN set -ex \
+    && apk add --no-cache \
+        libev \
+    && python -m pip install --no-cache-dir --no-index /wheels/* \
+    && rm -rf /wheels \
+    && rm -rf /var/cache/apk/*
+
+WORKDIR /app
+
+COPY ./src /app
 
 # Bjoern
 CMD ["python", "wsgi.py"]
