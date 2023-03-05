@@ -66,5 +66,4 @@ jobs:
 
       - name: Execute locust tests
         run: |
-          locust locust --config=test-bjoern.conf
-          pip install locust
+          locust --config=test-bjoern.conf
