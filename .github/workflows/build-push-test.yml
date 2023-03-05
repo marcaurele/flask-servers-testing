@@ -43,14 +43,15 @@ jobs:
     runs-on: ubuntu-latest
     services:
       bjoern:
-        image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main
+        image: "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main"
         ports:
         - 8000:8000
+    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up Python ${{ matrix.python-version }}
+      - name: Set up Python 3.11
         uses: actions/setup-python@v4
         with:
           python-version: "3.11"
