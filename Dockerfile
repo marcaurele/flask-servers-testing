@@ -56,7 +56,7 @@ LABEL "org.opencontainers.image.url"="https://github.com/marcaurele/flask-server
 LABEL "org.opencontainers.image.source"="https://github.com/marcaurele/flask-servers-testing/blob/main/Dockerfile"
 LABEL "org.opencontainers.image.vendor"="Private"
 LABEL "org.opencontainers.image.title"="Flask servers testing"
-LABEL "org.opencontainers.image.description"="Image to validate performance testing for different WSGI and ASGI servers."
+LABEL "org.opencontainers.image.description"="Image to validate performance for different WSGI and ASGI servers."
 
 COPY --from=requirements /wheels/ /wheels/
 
