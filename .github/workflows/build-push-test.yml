@@ -1,8 +1,7 @@
-name: Create and publish a Docker image
+name: Build and publish a Docker image
 
 on:
   push:
-    branches: ['main']
 
 env:
   REGISTRY: ghcr.io
@@ -32,10 +31,10 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
-      - name: Build and push Docker image
+      - name: Build and push Docker image (main branch only)
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
         with:
           context: .
-          push: true
+          push: ${{ github.ref == 'refs/heads/main' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
