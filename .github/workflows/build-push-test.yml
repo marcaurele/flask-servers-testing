@@ -23,7 +23,7 @@ jobs:
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.github_token }}
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
@@ -43,7 +43,10 @@ jobs:
     runs-on: ubuntu-latest
     services:
       bjoern:
-        image: "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main"
+        image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main
+        credentials:
+          username: ${{ github.actor }}
+          password: ${{ secrets.github_token }}
         ports:
         - 8000:8000
     
