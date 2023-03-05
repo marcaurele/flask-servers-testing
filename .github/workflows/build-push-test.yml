@@ -38,3 +38,29 @@ jobs:
           push: ${{ github.ref == 'refs/heads/main' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+  bjoern-job:
+    runs-on: ubuntu-latest
+    services:
+      bjoern:
+        image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main
+        ports:
+        - 8000:8000
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install locust
+        run: |
+          python -m pip install --upgrade pip
+          pip install locust
+
+      - name: Execute locust tests
+        run: |
+          locust locust --config=test-bjoern.conf
+          pip install locust
