@@ -43,7 +43,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       bjoern:
-        image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main
+        image: ghcr.io/marcaurele/flask-servers-testing:main
         credentials:
           username: ${{ github.actor }}
           password: ${{ secrets.github_token }}
