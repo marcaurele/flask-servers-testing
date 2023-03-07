@@ -4,6 +4,8 @@ services:
   bjoern:
     build:
       context: .
+      dockerfile: bjoern.Dockerfile
+      target: development
     ports:
       - "8000:8000"
     volumes:
@@ -13,9 +15,10 @@ services:
   gunicorn:
     build:
       context: .
-    command: gunicorn --bind 0.0.0.0:8001 --workers 1 wsgi:app
+      dockerfile: gunicorn.Dockerfile
+      target: development
     ports:
-    - "8001:8001"
+    - "8001:8000"
     volumes:
     - .:/build
     cpu_count: 1
@@ -23,9 +26,10 @@ services:
   uvicorn:
     build:
       context: .
-    command: uvicorn --host 0.0.0.0 --port 8002 --workers 1 asgi:asgi_app
+      dockerfile: uvicorn.Dockerfile
+      target: development
     ports:
-    - "8002:8002"
+    - "8002:8000"
     volumes:
     - .:/build
     cpu_count: 1
