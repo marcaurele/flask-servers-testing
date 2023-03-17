@@ -1,0 +1,4 @@
+test-*
+*.Dockerfile
+.github/
+.venv/
