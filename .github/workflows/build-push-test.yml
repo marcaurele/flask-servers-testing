@@ -99,7 +99,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: bjoern
-          path: .
+          path: flask-servers-testing
 
       - name: Setup Pages
         uses: actions/configure-pages@v3
@@ -107,7 +107,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          path: bjoern-locust-report.html
+          path: flask-servers-testing
 
       - name: Deploy to GitHub Pages
         id: deployment
