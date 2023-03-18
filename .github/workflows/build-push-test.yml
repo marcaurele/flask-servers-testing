@@ -245,6 +245,18 @@ jobs:
           name: bjoern
           path: flask-servers-testing
 
+      - name: Download gunicorn report
+        uses: actions/download-artifact@v3
+        with:
+          name: gunicorn
+          path: flask-servers-testing
+
+      - name: Download uvicorn report
+        uses: actions/download-artifact@v3
+        with:
+          name: uvicorn
+          path: flask-servers-testing
+
       - name: Setup Pages
         uses: actions/configure-pages@v3
 
