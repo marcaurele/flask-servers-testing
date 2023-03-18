@@ -1,4 +1,4 @@
-name: Build and publish a Docker image
+name: Build, publish and test server images
 
 on:
   push:
