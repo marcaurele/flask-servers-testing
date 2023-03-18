@@ -107,7 +107,7 @@ jobs:
     needs: build-and-push-bjoern-image
     services:
       bjoern:
-        image: ghcr.io/${{ github.repository }}-bjoern:${{ env.GITHUB_REF_NAME }}
+        image: ghcr.io/${{ github.repository }}-bjoern:$GITHUB_REF_NAME
         credentials:
           username: ${{ github.actor }}
           password: ${{ secrets.github_token }}
@@ -146,7 +146,7 @@ jobs:
     needs: build-and-push-gunicorn-image
     services:
       bjoern:
-        image: ghcr.io/${{ github.repository }}-gunicorn:${{ env.GITHUB_REF_NAME }}
+        image: ghcr.io/${{ github.repository }}-gunicorn:$GITHUB_REF_NAME
         credentials:
           username: ${{ github.actor }}
           password: ${{ secrets.github_token }}
@@ -185,7 +185,7 @@ jobs:
     needs: build-and-push-gunicorn-image
     services:
       bjoern:
-        image: ghcr.io/${{ github.repository }}-uvicorn:${{ env.GITHUB_REF_NAME }}
+        image: ghcr.io/${{ github.repository }}-uvicorn:$GITHUB_REF_NAME
         credentials:
           username: ${{ github.actor }}
           password: ${{ secrets.github_token }}
