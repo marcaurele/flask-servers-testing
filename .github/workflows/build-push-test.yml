@@ -182,7 +182,7 @@ jobs:
 
   uvicorn:
     runs-on: ubuntu-latest
-    needs: build-and-push-gunicorn-image
+    needs: build-and-push-uvicorn-image
     services:
       bjoern:
         image: ghcr.io/${{ github.repository }}-uvicorn:$GITHUB_REF_NAME
@@ -233,6 +233,7 @@ jobs:
     needs:
       - bjoern
       - gunicorn
+      - uvicorn
     steps:
       - name: Download bjoern report
         uses: actions/download-artifact@v3
