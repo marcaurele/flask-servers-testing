@@ -1,7 +1,7 @@
 ####################
 ### Build / Wheels #
 ####################
-FROM python:3.11.2-alpine3.17 as requirements
+FROM python:3.11.3-alpine3.17 as requirements
 
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
@@ -49,7 +49,7 @@ CMD ["uvicorn", "--host", "0.0.0.0", "--port", "8000", "--workers", "1", "asgi:a
 ###########
 # Runtime #
 ###########
-FROM python:3.11.2-alpine3.17 as runtime
+FROM python:3.11.3-alpine3.17 as runtime
 
 LABEL "org.opencontainers.image.authors"="Marc-Aurele BRothier"
 LABEL "org.opencontainers.image.url"="https://github.com/marcaurele/flask-servers-testing"
