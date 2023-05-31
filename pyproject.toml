@@ -12,7 +12,7 @@ gunicorn = "^20.1.0"
 bjoern = "^3.2.2"
 Flask = "^2.3.2"
 uvicorn = {extras = ["standard"], version = "^0.22.0"}
-asgiref = "^3.6.0"
+asgiref = "^3.7.2"
 
 [tool.poetry.group.dev.dependencies]
 locust = "^2.15.0"
