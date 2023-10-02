@@ -14,7 +14,6 @@ ENV PYTHONUNBUFFERED=1 \
 RUN set -ex \
     && apk add --no-cache \
         build-base \
-        curl \
         libev-dev \
         linux-headers \
     && pip install poetry
@@ -24,7 +23,7 @@ WORKDIR /tmp
 COPY pyproject.toml poetry.lock /tmp/
 
 RUN set -ex \
-  && poetry export -f requirements.txt --output requirements.txt \
+  && poetry export --with=bjoern -f requirements.txt --output requirements.txt \
   && pip wheel --no-cache-dir \
       --wheel-dir /wheels \
       --requirement requirements.txt

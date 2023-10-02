@@ -12,11 +12,6 @@ ENV PYTHONUNBUFFERED=1 \
     POETRY_NO_INTERACTION=1
 
 RUN set -ex \
-    && apk add --no-cache \
-        build-base \
-        curl \
-        libev-dev \
-        linux-headers \
     && pip install poetry
 
 WORKDIR /tmp
@@ -24,7 +19,7 @@ WORKDIR /tmp
 COPY pyproject.toml poetry.lock /tmp/
 
 RUN set -ex \
-  && poetry export -f requirements.txt --output requirements.txt \
+  && poetry export --with=uvicorn -f requirements.txt --output requirements.txt \
   && pip wheel --no-cache-dir \
       --wheel-dir /wheels \
       --requirement requirements.txt
@@ -37,7 +32,7 @@ FROM requirements as development
 RUN set -ex \
   && poetry config virtualenvs.options.system-site-packages true \
 	&& poetry config virtualenvs.create false \
-	&& poetry install --no-root --no-interaction --no-ansi --without=dev
+	&& poetry install --no-root --no-interaction --no-ansi --without=dev --with=uvicorn
 
 WORKDIR /build/src
 
@@ -61,11 +56,8 @@ LABEL "org.opencontainers.image.description"="Image to validate performance for 
 COPY --from=requirements /wheels/ /wheels/
 
 RUN set -ex \
-    && apk add --no-cache \
-        libev \
     && python -m pip install --no-cache-dir --no-index /wheels/* \
-    && rm -rf /wheels \
-    && rm -rf /var/cache/apk/*
+    && rm -rf /wheels
 
 WORKDIR /app
 

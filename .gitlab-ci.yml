@@ -1,0 +1,129 @@
+---
+
+stages:
+- build
+- tests
+- publish
+
+variables:
+  BJOERN_IMAGE: "${CI_REGISTRY_IMAGE}/${CI_PROJECT_NAME}-bjoern:${CI_COMMIT_SHORT_SHA}"
+  GUNICORN_IMAGE: "${CI_REGISTRY_IMAGE}/${CI_PROJECT_NAME}-gunicorn:${CI_COMMIT_SHORT_SHA}"
+  UVICORN_IMAGE: "${CI_REGISTRY_IMAGE}/${CI_PROJECT_NAME}-uvicorn:${CI_COMMIT_SHORT_SHA}"
+
+build containers:
+  stage: build
+  interruptible: true
+  image: quay.io/containers/buildah
+  variables:
+    BUILDAH_ISOLATION: chroot
+    BUILDAH_LAYERS: "true"
+    BJOERN_IMAGE_LATEST: "${CI_REGISTRY_IMAGE}/${CI_PROJECT_NAME}-bjoern:latest"
+    GUNICORN_IMAGE_LATEST: "${CI_REGISTRY_IMAGE}/${CI_PROJECT_NAME}-gunicorn:latest"
+    UVICORN_IMAGE_LATEST: "${CI_REGISTRY_IMAGE}/${CI_PROJECT_NAME}-uvicorn:latest"
+  before_script:
+  - buildah version
+  - buildah info
+  - buildah login
+      --username "${CI_REGISTRY_USER}"
+      --password "${CI_REGISTRY_PASSWORD}"
+      "${CI_REGISTRY}"
+  script:
+  - buildah build
+      --cache-from "${CI_REGISTRY_IMAGE}/cache"
+      --cache-to "${CI_REGISTRY_IMAGE}/cache"
+      --tag "${BJOERN_IMAGE}"
+      --file bjoern.Dockerfile
+      .
+  - buildah push
+      "${BJOERN_IMAGE}"
+
+  - buildah build
+      --cache-from "${CI_REGISTRY_IMAGE}/cache"
+      --cache-to "${CI_REGISTRY_IMAGE}/cache"
+      --tag "${GUNICORN_IMAGE}"
+      --file gunicorn.Dockerfile
+      .
+  - buildah push
+      "${GUNICORN_IMAGE}"
+
+  - buildah build
+      --cache-from "${CI_REGISTRY_IMAGE}/cache"
+      --cache-to "${CI_REGISTRY_IMAGE}/cache"
+      --tag "${UVICORN_IMAGE}"
+      --file uvicorn.Dockerfile
+      .
+  - buildah push
+      "${UVICORN_IMAGE}"
+
+  - |
+    if [ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]; then
+      buildah tag "${BJOERN_IMAGE}" "${BJOERN_IMAGE_LATEST}"
+      buildah push "${BJOERN_IMAGE_LATEST}"
+      buildah tag "${GUNICORN_IMAGE}" "${GUNICORN_IMAGE_LATEST}"
+      buildah push "${GUNICORN_IMAGE_LATEST}"
+      buildah tag "${UVICORN_IMAGE}" "${UVICORN_IMAGE_LATEST}"
+      buildah push "${UVICORN_IMAGE_LATEST}"
+    fi
+  after_script:
+  - buildah logout --all
+
+test bjoern:
+  stage: tests
+  interruptible: true
+  image: "${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/python:3.11"
+  services:
+  - name: "${BJOERN_IMAGE}"
+    alias: python-server
+  before_script:
+  - pip install poetry
+  - poetry install --no-root --no-interaction --no-ansi --only=dev
+  - mkdir results
+  script:
+  - poetry run locust --config=test.conf --html results/bjoern-locust-report.html
+  artifacts:
+    expire_in: 10 mins
+    paths: [results/]
+
+test gunicorn:
+  stage: tests
+  interruptible: true
+  image: "${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/python:3.11"
+  services:
+  - name: "${GUNICORN_IMAGE}"
+    alias: python-server
+  before_script:
+  - pip install poetry
+  - poetry install --no-root --no-interaction --no-ansi --only=dev
+  - mkdir results
+  script:
+  - poetry run locust --config=test.conf --html results/gunicorn-locust-report.html
+  artifacts:
+    expire_in: 10 mins
+    paths: [results/]
+
+test uvicorn:
+  stage: tests
+  interruptible: true
+  image: "${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/python:3.11"
+  services:
+  - name: "${UVICORN_IMAGE}"
+    alias: python-server
+  before_script:
+  - pip install poetry
+  - poetry install --no-root --no-interaction --no-ansi --only=dev
+  - mkdir results
+  script:
+  - poetry run locust --config=test.conf --html results/uvicorn-locust-report.html
+  artifacts:
+    expire_in: 10 mins
+    paths: [results/]
+
+pages:
+  stage: publish
+  script:
+  - mv results public
+  artifacts:
+    paths:
+    - public
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
