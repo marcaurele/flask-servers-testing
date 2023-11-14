@@ -790,13 +790,13 @@ i18n = ["Babel (>=2.7)"]
 
 [[package]]
 name = "locust"
-version = "2.18.1"
+version = "2.18.3"
 description = "Developer friendly load testing framework"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "locust-2.18.1-py3-none-any.whl", hash = "sha256:95cb37490487db693b9a85914ca13a962d74de7b9588519909a5a678512dfaef"},
-    {file = "locust-2.18.1.tar.gz", hash = "sha256:503985a240f8f8098636c9493689caca2cc923b83f241393bb2c92bde5801278"},
+    {file = "locust-2.18.3-py3-none-any.whl", hash = "sha256:af895c029b1b2f8fee12c2877119676fe4b77f955752d2c6d21a17659ebe87ed"},
+    {file = "locust-2.18.3.tar.gz", hash = "sha256:a5ffd8f18c6d4d8a5c284bf5b6da5e1b4712e8e2217a161ab6857ece38767207"},
 ]
 
 [package.dependencies]
