@@ -1,7 +1,7 @@
 ####################
 ### Build / Wheels #
 ####################
-FROM python:3.11.4-alpine3.17 as requirements
+FROM python:3.12.0-alpine3.17 as requirements
 
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
@@ -48,7 +48,7 @@ CMD ["python", "wsgi.py"]
 ###########
 # Runtime #
 ###########
-FROM python:3.11.4-alpine3.17 as runtime
+FROM python:3.12.0-alpine3.17 as runtime
 
 LABEL "org.opencontainers.image.authors"="Marc-Aurele BRothier"
 LABEL "org.opencontainers.image.url"="https://github.com/marcaurele/flask-servers-testing"
