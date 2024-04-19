@@ -749,13 +749,13 @@ i18n = ["Babel (>=2.7)"]
 
 [[package]]
 name = "locust"
-version = "2.25.0"
+version = "2.26.0"
 description = "Developer friendly load testing framework"
 optional = false
-python-versions = ">=3.8"
+python-versions = ">=3.9"
 files = [
-    {file = "locust-2.25.0-py3-none-any.whl", hash = "sha256:35ee14d0a2b91d0d644150d0b628ce4569b0e1fec1c33c55040fa26cc693d085"},
-    {file = "locust-2.25.0.tar.gz", hash = "sha256:45bc88b3097f0346a46514f99ebf8d8a86f07325366da0b9dc2c3f207499dbc6"},
+    {file = "locust-2.26.0-py3-none-any.whl", hash = "sha256:7957d8346e5830ba35e3a7a9c1eebe0fb73b0be117e54213c61ef3bc658a1ae6"},
+    {file = "locust-2.26.0.tar.gz", hash = "sha256:a5cb4c96b8fa1ae5c20876ab8ca9d1e980d56148ed3c187df610cc2546705bff"},
 ]
 
 [package.dependencies]
@@ -764,7 +764,7 @@ flask = ">=2.0.0"
 Flask-Cors = ">=3.0.10"
 Flask-Login = ">=0.6.3"
 gevent = ">=22.10.2"
-geventhttpclient = ">=2.0.11"
+geventhttpclient = "2.2.1"
 msgpack = ">=1.0.0"
 psutil = ">=5.9.1"
 pywin32 = {version = "*", markers = "platform_system == \"Windows\""}
