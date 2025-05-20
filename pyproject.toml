@@ -1,28 +1,27 @@
-[tool.poetry]
+[project]
 name = "bjoern-gunicorn-uvicorn-flask-test"
 version = "0.1.0"
 description = ""
-authors = ["Marc-Aurèle Brothier <m@brothier.org>"]
+authors = [
+  {name = "Marc-Aurèle Brothier", email = "m@brothier.org"},
+]
 readme = "README.md"
-packages = [{include = "src"}]
+requires-python = "~=3.12.0"
+dependencies = [
+    "asgiref>=3.8.1",
+    "flask>=3.1.1",
+]
 
-[tool.poetry.dependencies]
-python = "^3.11"
-Flask = "^3.0.0"
-asgiref = "^3.7.2"
-
-[tool.poetry.group.dev.dependencies]
-locust = "^2.15.0"
-
-[tool.poetry.group.bjoern.dependencies]
-bjoern = "^3.2.2"
-
-[tool.poetry.group.gunicorn.dependencies]
-gunicorn = "^22.0.0"
-
-[tool.poetry.group.uvicorn.dependencies]
-uvicorn = {extras = ["standard"], version = "^0.34.0"}
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+[dependency-groups]
+bjoern = [
+    "bjoern==3.2.2",
+]
+dev = [
+    "locust==2.37.4",
+]
+gunicorn = [
+    "gunicorn==22.0.0",
+]
+uvicorn = [
+    "uvicorn[standard]==0.34.0",
+]
