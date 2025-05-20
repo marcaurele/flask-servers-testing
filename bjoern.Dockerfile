@@ -1,74 +1,70 @@
-####################
-### Build / Wheels #
-####################
-FROM python:3.12.0-alpine3.17 as requirements
+FROM ghcr.io/astral-sh/uv:0.7.2 AS uv-base
 
-ENV PYTHONUNBUFFERED=1 \
-    PYTHONDONTWRITEBYTECODE=1 \
-    # pip
-    PIP_DISABLE_PIP_VERSION_CHECK=on \
-    # poetry
-    POETRY_HOME=/opt/poetry \
-    POETRY_NO_INTERACTION=1
+###########
+# Runtime #
+###########
+FROM python:3.12.0-alpine3.17 as build
+
+ENV UV_SYSTEM_PYTHON=1 \
+    UV_LINK_MODE=copy \
+    UV_COMPILE_BYTECODE=1 \
+    PATH="/app/.venv/bin:$PATH"
+
+COPY --from=uv-base /uv /bin/
+
+# Change the working directory to the `app` directory
+WORKDIR /app
 
 RUN set -ex \
     && apk add --no-cache \
         build-base \
-        libev-dev \
         linux-headers \
-    && pip install poetry
+        libev-dev
 
-WORKDIR /tmp
-
-COPY pyproject.toml poetry.lock /tmp/
-
-RUN set -ex \
-  && poetry export --with=bjoern -f requirements.txt --output requirements.txt \
-  && pip wheel --no-cache-dir \
-      --wheel-dir /wheels \
-      --requirement requirements.txt
-
-###############
-# Development #
-###############
-FROM requirements as development
-
-RUN set -ex \
-  && poetry config virtualenvs.options.system-site-packages true \
-	&& poetry config virtualenvs.create false \
-	&& poetry install --no-root --no-interaction --no-ansi --without=dev
-
-WORKDIR /build/src
-
-COPY ./src /build/src/
-
-# Bjoern
-CMD ["python", "wsgi.py"]
+# Install dependencies
+RUN --mount=type=cache,target=/root/.cache/uv \
+    --mount=type=bind,source=uv.lock,target=uv.lock \
+    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
+    uv sync --locked --no-install-project --no-editable --group=bjoern
 
 ###########
 # Runtime #
 ###########
 FROM python:3.12.0-alpine3.17 as runtime
 
-LABEL "org.opencontainers.image.authors"="Marc-Aurele BRothier"
+LABEL "org.opencontainers.image.authors"="Marc-Aurele Brothier"
 LABEL "org.opencontainers.image.url"="https://github.com/marcaurele/flask-servers-testing"
 LABEL "org.opencontainers.image.source"="https://github.com/marcaurele/flask-servers-testing/blob/main/Dockerfile"
 LABEL "org.opencontainers.image.vendor"="Private"
 LABEL "org.opencontainers.image.title"="Flask servers testing"
 LABEL "org.opencontainers.image.description"="Image to validate performance for different WSGI and ASGI servers."
 
-COPY --from=requirements /wheels/ /wheels/
+ENV UV_SYSTEM_PYTHON=1 \
+    UV_LINK_MODE=copy \
+    UV_COMPILE_BYTECODE=1 \
+    PATH="/app/.venv/bin:$PATH"
+
+EXPOSE 8000
+
+COPY --from=uv-base /uv /bin/
+
+# Change the working directory to the `app` directory
+WORKDIR /app
 
 RUN set -ex \
     && apk add --no-cache \
-        libev \
-    && python -m pip install --no-cache-dir --no-index /wheels/* \
-    && rm -rf /wheels \
-    && rm -rf /var/cache/apk/*
+        libev
 
-WORKDIR /app
+# Copy built dependencies
+COPY --from=build /app/.venv/ /app/.venv/
 
-COPY ./src /app
+ADD src/ /app
 
-# Bjoern
+# Sync the project
+RUN --mount=type=cache,target=/root/.cache/uv \
+    --mount=type=bind,source=uv.lock,target=uv.lock \
+    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
+    uv sync --locked --no-editable --group=bjoern
+
+# Run Bjoern
 CMD ["python", "wsgi.py"]

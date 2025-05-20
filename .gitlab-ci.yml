@@ -1,5 +1,7 @@
 ---
 
+image: "ghcr.io/astral-sh/uv:python3.12-bookworm"
+
 stages:
 - build
 - tests
@@ -70,16 +72,20 @@ build containers:
 test bjoern:
   stage: tests
   interruptible: true
-  image: "${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/python:3.12"
   services:
   - name: "${BJOERN_IMAGE}"
     alias: python-server
+  variables:
+    UV_NO_CACHE: "1"
+    UV_SYSTEM_PYTHON: "1"
+    UV_NO_ENV_FILE: "1"
+    UV_FROZEN: "1"
+    UV_LINK_MODE: copy
   before_script:
-  - pip install poetry
-  - poetry install --no-root --no-interaction --no-ansi --only=dev
   - mkdir results
+  - uv --verbose sync --no-install-project --no-editable --only-dev
   script:
-  - poetry run locust --config=test.conf --html results/bjoern-locust-report.html
+  - uv --verbose run --no-project locust --config=test.conf --html results/bjoern-locust-report.html
   artifacts:
     expire_in: 10 mins
     paths: [results/]
@@ -87,16 +93,20 @@ test bjoern:
 test gunicorn:
   stage: tests
   interruptible: true
-  image: "${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/python:3.12"
   services:
   - name: "${GUNICORN_IMAGE}"
     alias: python-server
+  variables:
+    UV_NO_CACHE: "1"
+    UV_SYSTEM_PYTHON: "1"
+    UV_NO_ENV_FILE: "1"
+    UV_FROZEN: "1"
+    UV_LINK_MODE: copy
   before_script:
-  - pip install poetry
-  - poetry install --no-root --no-interaction --no-ansi --only=dev
   - mkdir results
+  - uv --verbose sync --no-install-project --no-editable --only-dev
   script:
-  - poetry run locust --config=test.conf --html results/gunicorn-locust-report.html
+  - uv --verbose run --no-project locust --config=test.conf --html results/gunicorn-locust-report.html
   artifacts:
     expire_in: 10 mins
     paths: [results/]
@@ -104,16 +114,20 @@ test gunicorn:
 test uvicorn:
   stage: tests
   interruptible: true
-  image: "${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/python:3.12"
   services:
   - name: "${UVICORN_IMAGE}"
     alias: python-server
+  variables:
+    UV_NO_CACHE: "1"
+    UV_SYSTEM_PYTHON: "1"
+    UV_NO_ENV_FILE: "1"
+    UV_FROZEN: "1"
+    UV_LINK_MODE: copy
   before_script:
-  - pip install poetry
-  - poetry install --no-root --no-interaction --no-ansi --only=dev
   - mkdir results
+  - uv --verbose sync --no-install-project --no-editable --only-dev
   script:
-  - poetry run locust --config=test.conf --html results/uvicorn-locust-report.html
+  - uv --verbose run --no-project locust --config=test.conf --html results/uvicorn-locust-report.html
   artifacts:
     expire_in: 10 mins
     paths: [results/]
