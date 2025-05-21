@@ -20,7 +20,7 @@ dev = [
     "locust==2.37.4",
 ]
 gunicorn = [
-    "gunicorn==22.0.0",
+    "gunicorn==23.0.0",
 ]
 uvicorn = [
     "uvicorn[standard]==0.34.0",
