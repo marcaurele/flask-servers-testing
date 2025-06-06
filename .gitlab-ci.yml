@@ -1,6 +1,6 @@
 ---
 
-image: "ghcr.io/astral-sh/uv:python3.12-alpine"
+image: "ghcr.io/astral-sh/uv:python3.12-bookworm"
 
 stages:
 - build
