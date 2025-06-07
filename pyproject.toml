@@ -6,7 +6,7 @@ authors = [
   {name = "Marc-Aurèle Brothier", email = "m@brothier.org"},
 ]
 readme = "README.md"
-requires-python = "~=3.12.0"
+requires-python = "~=3.13.4"
 dependencies = [
     "asgiref>=3.8.1",
     "flask>=3.1.1",
