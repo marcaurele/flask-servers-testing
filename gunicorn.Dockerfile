@@ -3,7 +3,7 @@ FROM ghcr.io/astral-sh/uv:0.7.12 AS uv-base
 ###########
 # Runtime #
 ###########
-FROM python:3.13.4-alpine as build
+FROM python:3.13.5-alpine as build
 
 ENV UV_SYSTEM_PYTHON=1 \
     UV_LINK_MODE=copy \
@@ -24,7 +24,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 ###########
 # Runtime #
 ###########
-FROM python:3.13.4-alpine as runtime
+FROM python:3.13.5-alpine as runtime
 
 LABEL "org.opencontainers.image.authors"="Marc-Aurele Brothier"
 LABEL "org.opencontainers.image.url"="https://github.com/marcaurele/flask-servers-testing"
