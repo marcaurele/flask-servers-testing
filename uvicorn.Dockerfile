@@ -1,4 +1,4 @@
-FROM ghcr.io/astral-sh/uv:0.8.0 AS uv-base
+FROM ghcr.io/astral-sh/uv:0.8.2 AS uv-base
 
 ###########
 # Runtime #
