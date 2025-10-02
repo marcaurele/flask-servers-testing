@@ -17,7 +17,7 @@ bjoern = [
     "bjoern==3.2.2",
 ]
 dev = [
-    "locust==2.41.2",
+    "locust==2.41.3",
 ]
 gunicorn = [
     "gunicorn==23.0.0",
