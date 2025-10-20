@@ -70,7 +70,7 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 bjoern = [{ name = "bjoern", specifier = "==3.2.2" }]
-dev = [{ name = "locust", specifier = "==2.41.6" }]
+dev = [{ name = "locust", specifier = "==2.42.0" }]
 gunicorn = [{ name = "gunicorn", specifier = "==23.0.0" }]
 uvicorn = [{ name = "uvicorn", extras = ["standard"], specifier = "==0.38.0" }]
 
@@ -379,7 +379,7 @@ wheels = [
 
 [[package]]
 name = "locust"
-version = "2.41.6"
+version = "2.42.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "configargparse" },
@@ -400,9 +400,9 @@ dependencies = [
     { name = "setuptools" },
     { name = "werkzeug" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/72/7b/f7701a357d08fe10ed0d0cc7c9d5ee550e79ea624a4799c9a02989981d9b/locust-2.41.6.tar.gz", hash = "sha256:1fd76545f41639ba8c1ee57b5cafdf8bd426a264a0656fd927a99040bb86150b", size = 1415578, upload-time = "2025-10-10T12:35:50.797Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/a9/5d/38cbb321cdbd6db09a28d39c2ad68112ef5e5ca5ddd308ae4f4868610f9e/locust-2.42.0.tar.gz", hash = "sha256:b327c613469bd4508ac5fb398e7fce6f2346985e27463db29a6045beefd5f78b", size = 1416361, upload-time = "2025-10-19T12:13:03.683Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/f0/1e/6afe7d0c3d8fc5fff3d82d77eb141d5440bc776bddc7a9802fa79c7873e0/locust-2.41.6-py3-none-any.whl", hash = "sha256:6679bf9e2d92e3c6500551f29dfa58a84d6f767d398cedefbc8a4765659a2126", size = 1434094, upload-time = "2025-10-10T12:35:48.355Z" },
+    { url = "https://files.pythonhosted.org/packages/ad/e8/fab1187d60cebfc13a23e194a2b9e726d7ca6028092ec40bd7825d3f5907/locust-2.42.0-py3-none-any.whl", hash = "sha256:2ea7fac853ca8dfc981408f22dd83f3b93cca152b3a21e30b6b03dadda6cde65", size = 1435074, upload-time = "2025-10-19T12:13:01.071Z" },
 ]
 
 [[package]]
@@ -648,7 +648,7 @@ wheels = [
 
 [[package]]
 name = "requests"
-version = "2.32.5"
+version = "2.32.4"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "certifi" },
@@ -656,9 +656,9 @@ dependencies = [
     { name = "idna" },
     { name = "urllib3" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/c9/74/b3ff8e6c8446842c3f5c837e9c3dfcfe2018ea6ecef224c710c85ef728f4/requests-2.32.5.tar.gz", hash = "sha256:dbba0bac56e100853db0ea71b82b4dfd5fe2bf6d3754a8893c3af500cec7d7cf", size = 134517, upload-time = "2025-08-18T20:46:02.573Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/e1/0a/929373653770d8a0d7ea76c37de6e41f11eb07559b103b1c02cafb3f7cf8/requests-2.32.4.tar.gz", hash = "sha256:27d0316682c8a29834d3264820024b62a36942083d52caf2f14c0591336d3422", size = 135258, upload-time = "2025-06-09T16:43:07.34Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/1e/db/4254e3eabe8020b458f1a747140d32277ec7a271daf1d235b70dc0b4e6e3/requests-2.32.5-py3-none-any.whl", hash = "sha256:2462f94637a34fd532264295e186976db0f5d453d1cdd31473c85a6a161affb6", size = 64738, upload-time = "2025-08-18T20:46:00.542Z" },
+    { url = "https://files.pythonhosted.org/packages/7c/e4/56027c4a6b4ae70ca9de302488c5ca95ad4a39e190093d6c1a8ace08341b/requests-2.32.4-py3-none-any.whl", hash = "sha256:27babd3cda2a6d50b30443204ee89830707d396671944c998b5975b031ac2b2c", size = 64847, upload-time = "2025-06-09T16:43:05.728Z" },
 ]
 
 [[package]]
