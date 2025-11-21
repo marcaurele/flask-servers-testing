@@ -70,7 +70,7 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 bjoern = [{ name = "bjoern", specifier = "==3.2.2" }]
-dev = [{ name = "locust", specifier = "==2.42.4" }]
+dev = [{ name = "locust", specifier = "==2.42.5" }]
 gunicorn = [{ name = "gunicorn", specifier = "==23.0.0" }]
 uvicorn = [{ name = "uvicorn", extras = ["standard"], specifier = "==0.38.0" }]
 
@@ -374,7 +374,7 @@ wheels = [
 
 [[package]]
 name = "locust"
-version = "2.42.4"
+version = "2.42.5"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "configargparse" },
@@ -394,9 +394,9 @@ dependencies = [
     { name = "requests" },
     { name = "werkzeug" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/75/ce/9f4dddaf9717bcaeeea7305a6e71e2dd84a672854c97abb44ed81587c485/locust-2.42.4.tar.gz", hash = "sha256:b97ab0bbee37bf8108816b5cc4c5312f0aa221c8b91e1ff3a459008833a38396", size = 1418541, upload-time = "2025-11-20T11:43:09.639Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/8a/69/076f6a1eb4e5813eea864f5a9a5311385c5cc71c46377ed7cec824eca0a1/locust-2.42.5.tar.gz", hash = "sha256:83b8cfc38bd88b3d9daf9790be24239356ccd1160d9b357fa9c7af32907a8860", size = 1418586, upload-time = "2025-11-20T16:45:44.806Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/32/ec/1c095fec27b7dd9483d9436c5bd9e51538ebba5776950db4249e0ab7ba9c/locust-2.42.4-py3-none-any.whl", hash = "sha256:c0519d023891d9270d34a1ee260e92de3d55b8ebf380b4313e006f68b507771d", size = 1437129, upload-time = "2025-11-20T11:43:07.915Z" },
+    { url = "https://files.pythonhosted.org/packages/2d/a9/ce92490466f719e658b5815a4778669c12a4b907ff7ca51e0a94baedf5b2/locust-2.42.5-py3-none-any.whl", hash = "sha256:fa654eb501bf4bad665310ead59c9d7b209d057717795fbbcc977f61af1fdf64", size = 1437168, upload-time = "2025-11-20T16:45:42.855Z" },
 ]
 
 [[package]]
