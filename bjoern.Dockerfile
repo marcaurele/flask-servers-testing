@@ -18,8 +18,11 @@ WORKDIR /app
 RUN set -ex \
     && apk add --no-cache \
         build-base \
+        gcc \
         linux-headers \
-        libev-dev
+        libev-dev \
+        musl-dev \
+        python3-dev
 
 # Install dependencies
 RUN --mount=type=cache,target=/root/.cache/uv \

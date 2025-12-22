@@ -15,6 +15,15 @@ COPY --from=uv-base /uv /bin/
 # Change the working directory to the `app` directory
 WORKDIR /app
 
+RUN set -ex \
+    && apk add --no-cache \
+        build-base \
+        gcc \
+        linux-headers \
+        libev-dev \
+        musl-dev \
+        python3-dev
+
 # Install dependencies
 RUN --mount=type=cache,target=/root/.cache/uv \
     --mount=type=bind,source=uv.lock,target=uv.lock \

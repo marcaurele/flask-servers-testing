@@ -15,6 +15,15 @@ COPY --from=uv-base /uv /bin/
 # Change the working directory to the `app` directory
 WORKDIR /app
 
+RUN set -ex \
+    && apk add --no-cache \
+        build-base \
+        gcc \
+        linux-headers \
+        libev-dev \
+        musl-dev \
+        python3-dev
+
 # Install dependencies
 RUN --mount=type=cache,target=/root/.cache/uv \
     --mount=type=bind,source=uv.lock,target=uv.lock \
@@ -56,5 +65,5 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
     uv sync --locked --no-editable --group=granian
 
-# Run Gunicorm
-CMD ["granian", "--host", "0.0.0.0", "--workers", "1", "wsgi:app"]
+# Run Granian
+CMD ["granian", "--interface", "wsgi", "--host", "0.0.0.0", "--workers", "1", "wsgi:app"]
