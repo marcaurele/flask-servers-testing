@@ -28,7 +28,7 @@ RUN set -ex \
 RUN --mount=type=cache,target=/root/.cache/uv \
     --mount=type=bind,source=uv.lock,target=uv.lock \
     --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
-    uv sync --locked --no-install-project --no-editable --group=bjoern
+    uv sync --locked --no-install-project --no-editable --group=granian
 
 ###########
 # Runtime #
@@ -54,10 +54,6 @@ COPY --from=uv-base /uv /bin/
 # Change the working directory to the `app` directory
 WORKDIR /app
 
-RUN set -ex \
-    && apk add --no-cache \
-        libev
-
 # Copy built dependencies
 COPY --from=build /app/.venv/ /app/.venv/
 
@@ -67,7 +63,7 @@ ADD src/ /app
 RUN --mount=type=cache,target=/root/.cache/uv \
     --mount=type=bind,source=uv.lock,target=uv.lock \
     --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
-    uv sync --locked --no-editable --group=bjoern
+    uv sync --locked --no-editable --group=granian
 
-# Run Bjoern
-CMD ["python", "wsgi.py"]
+# Run Granian
+CMD ["granian", "--interface", "wsgi", "--host", "0.0.0.0", "--workers", "1", "wsgi:app"]

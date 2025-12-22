@@ -5,9 +5,18 @@ services:
     build:
       context: .
       dockerfile: bjoern.Dockerfile
-      target: development
     ports:
       - "8000:8000"
+    volumes:
+    - .:/build
+    cpu_count: 1
+
+  granian:
+    build:
+      context: .
+      dockerfile: granian.Dockerfile
+    ports:
+    - "8001:8000"
     volumes:
     - .:/build
     cpu_count: 1
@@ -16,9 +25,8 @@ services:
     build:
       context: .
       dockerfile: gunicorn.Dockerfile
-      target: development
     ports:
-    - "8001:8000"
+    - "8002:8000"
     volumes:
     - .:/build
     cpu_count: 1
@@ -27,9 +35,8 @@ services:
     build:
       context: .
       dockerfile: uvicorn.Dockerfile
-      target: development
     ports:
-    - "8002:8000"
+    - "8003:8000"
     volumes:
     - .:/build
     cpu_count: 1
