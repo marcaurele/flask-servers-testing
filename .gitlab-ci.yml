@@ -9,6 +9,7 @@ stages:
 
 variables:
   BJOERN_IMAGE: "${CI_REGISTRY_IMAGE}/${CI_PROJECT_NAME}-bjoern:${CI_COMMIT_SHORT_SHA}"
+  GRANIAN_IMAGE: "${CI_REGISTRY_IMAGE}/${CI_PROJECT_NAME}-granian:${CI_COMMIT_SHORT_SHA}"
   GUNICORN_IMAGE: "${CI_REGISTRY_IMAGE}/${CI_PROJECT_NAME}-gunicorn:${CI_COMMIT_SHORT_SHA}"
   UVICORN_IMAGE: "${CI_REGISTRY_IMAGE}/${CI_PROJECT_NAME}-uvicorn:${CI_COMMIT_SHORT_SHA}"
 
@@ -20,6 +21,7 @@ build containers:
     BUILDAH_ISOLATION: chroot
     BUILDAH_LAYERS: "true"
     BJOERN_IMAGE_LATEST: "${CI_REGISTRY_IMAGE}/${CI_PROJECT_NAME}-bjoern:latest"
+    GRANIAN_IMAGE_LATEST: "${CI_REGISTRY_IMAGE}/${CI_PROJECT_NAME}-granian:latest"
     GUNICORN_IMAGE_LATEST: "${CI_REGISTRY_IMAGE}/${CI_PROJECT_NAME}-gunicorn:latest"
     UVICORN_IMAGE_LATEST: "${CI_REGISTRY_IMAGE}/${CI_PROJECT_NAME}-uvicorn:latest"
   before_script:
@@ -38,6 +40,15 @@ build containers:
       .
   - buildah push
       "${BJOERN_IMAGE}"
+
+  - buildah build
+      --cache-from "${CI_REGISTRY_IMAGE}/cache"
+      --cache-to "${CI_REGISTRY_IMAGE}/cache"
+      --tag "${GRANIAN_IMAGE}"
+      --file granian.Dockerfile
+      .
+  - buildah push
+      "${GRANIAN_IMAGE}"
 
   - buildah build
       --cache-from "${CI_REGISTRY_IMAGE}/cache"
@@ -61,6 +72,8 @@ build containers:
     if [ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]; then
       buildah tag "${BJOERN_IMAGE}" "${BJOERN_IMAGE_LATEST}"
       buildah push "${BJOERN_IMAGE_LATEST}"
+      buildah tag "${GRANIAN_IMAGE}" "${GRANIAN_IMAGE_LATEST}"
+      buildah push "${GRANIAN_IMAGE_LATEST}"
       buildah tag "${GUNICORN_IMAGE}" "${GUNICORN_IMAGE_LATEST}"
       buildah push "${GUNICORN_IMAGE_LATEST}"
       buildah tag "${UVICORN_IMAGE}" "${UVICORN_IMAGE_LATEST}"
@@ -86,6 +99,27 @@ test bjoern:
   - uv --verbose sync --no-install-project --no-editable --only-dev
   script:
   - uv --verbose run --no-project locust --config=test.conf --html results/bjoern-locust-report.html
+  artifacts:
+    expire_in: 10 mins
+    paths: [results/]
+
+test granian:
+  stage: tests
+  interruptible: true
+  services:
+  - name: "${GRANIAN_IMAGE}"
+    alias: python-server
+  variables:
+    UV_NO_CACHE: "1"
+    UV_SYSTEM_PYTHON: "1"
+    UV_NO_ENV_FILE: "1"
+    UV_FROZEN: "1"
+    UV_LINK_MODE: copy
+  before_script:
+  - mkdir results
+  - uv --verbose sync --no-install-project --no-editable --only-dev
+  script:
+  - uv --verbose run --no-project locust --config=test.conf --html results/granian-locust-report.html
   artifacts:
     expire_in: 10 mins
     paths: [results/]

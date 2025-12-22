@@ -12,6 +12,17 @@ services:
     - .:/build
     cpu_count: 1
 
+  granian:
+    build:
+      context: .
+      dockerfile: granian.Dockerfile
+      target: development
+    ports:
+    - "8001:8000"
+    volumes:
+    - .:/build
+    cpu_count: 1
+
   gunicorn:
     build:
       context: .
