@@ -26,5 +26,5 @@ gunicorn = [
     "gunicorn==23.0.0",
 ]
 uvicorn = [
-    "uvicorn[standard]==0.38.0",
+    "uvicorn[standard]==0.40.0",
 ]
