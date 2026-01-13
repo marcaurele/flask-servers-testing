@@ -17,7 +17,7 @@ bjoern = [
     "bjoern==3.2.2",
 ]
 dev = [
-    "locust==2.42.6",
+    "locust==2.43.0",
 ]
 granian = [
     "granian==2.6.0",
