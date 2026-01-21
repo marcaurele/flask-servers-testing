@@ -20,7 +20,7 @@ dev = [
     "locust==2.43.0",
 ]
 granian = [
-    "granian==2.6.0",
+    "granian==2.6.1",
 ]
 gunicorn = [
     "gunicorn==23.0.0",
