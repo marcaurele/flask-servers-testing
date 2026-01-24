@@ -1,5 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "enabledManagers": ["docker", "gitlabci", "python"],
   "packageRules": [
     {
       "matchPackageNames": ["*"],
