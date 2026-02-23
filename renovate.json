@@ -3,7 +3,6 @@
   "enabledManagers": ["docker", "gitlabci", "python"],
   "packageRules": [
     {
-      "matchPackageNames": ["*"],
       "matchUpdateTypes": ["major", "minor", "patch"],
       "automerge": true
     }
